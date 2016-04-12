@@ -6,10 +6,12 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 import aj.canvas.audiosearch.exception.CredentialsNotFoundException;
 import aj.canvas.audiosearch.model.AuthResult;
-
+import aj.canvas.audiosearch.model.EpisodeResult;
+import aj.canvas.audiosearch.model.TrendResult;
 import static org.junit.Assert.*;
 
 /**
@@ -35,7 +37,30 @@ public class AudiosearchUnitTest {
     }
 
     @Test
-    public void Trending_isNotNull() throws Exception{
+    public void Trending_isNotEmpty() throws Exception{
+        setUp();
+        assertNotEquals(0, audioSearch.getTrending().execute().body().size());
+    }
+
+    @Test
+    public void EpisodesSearchResult_isNotEmpty() throws Exception {
+        setUp();
+        assertNotEquals(0, audioSearch.searchEpisodes("elections").execute().body().getResults().size());
+    }
+
+    @Test
+    public void Episode_isNotNull() throws Exception{
+        setUp();
+        assertNotNull(audioSearch.getEpisode(67946).execute().body().getItunesEpisode());
+    }
+
+    @Test
+    public void TranscriptSearchResult_isNotEmpty(){
+
+    }
+
+    @Test
+    public void PeopleSearchResult_isNotEmpty(){
 
     }
 

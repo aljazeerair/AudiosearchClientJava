@@ -9,4 +9,5 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 })
 public class Highlights {
+
 }

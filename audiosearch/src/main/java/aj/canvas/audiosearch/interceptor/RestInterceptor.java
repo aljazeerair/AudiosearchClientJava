@@ -15,9 +15,10 @@ public class RestInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
-        request.newBuilder()
+        Request newRequest;
+        newRequest = request.newBuilder()
                 .addHeader("Authorization", "Bearer " + AccessToken)
                 .build();
-        return chain.proceed(request);
+        return chain.proceed(newRequest);
     }
 }

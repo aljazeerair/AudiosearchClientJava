@@ -13,8 +13,10 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "score",
     "type",
     "category",
-    "extra"
+    "extra",
+    "entity"
 })
+
 public class Entity {
 
     @JsonProperty("id")
@@ -31,6 +33,8 @@ public class Entity {
     private String category;
     @JsonProperty("extra")
     private String extra;
+    @JsonProperty("entity")
+    private String entity;
 
     /**
      * 

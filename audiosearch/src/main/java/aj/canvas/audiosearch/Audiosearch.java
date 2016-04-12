@@ -4,8 +4,9 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import aj.canvas.audiosearch.exception.CredentialsNotFoundException;
-import aj.canvas.audiosearch.interceptor.RestInterceptor;
 import aj.canvas.audiosearch.model.AuthResult;
+import aj.canvas.audiosearch.model.EpisodeQueryResult;
+import aj.canvas.audiosearch.model.EpisodeResult;
 import aj.canvas.audiosearch.model.Filter;
 import aj.canvas.audiosearch.model.TrendResult;
 import aj.canvas.audiosearch.service.AudiosearchService;
@@ -24,11 +25,12 @@ public class Audiosearch {
     private Retrofit authInstance;
     private AudiosearchService restService;
     private AuthorizationService authorizationService;
-    private final String AUDIOSEARCH_BASE_URL = "https://www.audiosear.ch/";
+    private final String AUDIOSEARCH_BASE_AUTH_URL = "https://www.audiosear.ch/";
+    private final String AUDIOSEARCH_BASE_API_URL = "https://www.audiosear.ch/api/";
     private final String GRANT_TYPE = "client_credentials";
     private String AUTH_SIGNATURE;
+    private String AUTH_TOKEN;
     private String AccessToken;
-    private String AccessTokenType;
     private String Signature;
     private final String TAG = "AudioSearch";
 
@@ -63,7 +65,7 @@ public class Audiosearch {
     public void Authorize() throws IOException{
         AuthResult authResult = authorizationService.getAccessToken(GRANT_TYPE, AUTH_SIGNATURE).execute().body();
         this.AccessToken = authResult.accessToken;
-        this.AccessTokenType = authResult.tokenType;
+        this.AUTH_TOKEN  = "Bearer" + " " + this.AccessToken;
     }
 
     public Audiosearch build() throws CredentialsNotFoundException, UnsupportedEncodingException {
@@ -88,32 +90,30 @@ public class Audiosearch {
         OkHttpClient authClient = new OkHttpClient();
 
         // Initialize RestClient with Rest interceptor
-        OkHttpClient asclient = new OkHttpClient().newBuilder()
-                                    .addInterceptor(new RestInterceptor(AccessToken))
-                                    .build();
+        OkHttpClient asClient = new OkHttpClient();
 
-        // Initialize Retorfit for Authentication
+        // Initialize Retrofit for Authentication
         authInstance = new Retrofit.Builder()
-                            .baseUrl(AUDIOSEARCH_BASE_URL)
+                            .baseUrl(AUDIOSEARCH_BASE_AUTH_URL)
                             .client(authClient)
                             .addConverterFactory(JacksonConverterFactory.create())
                             .build();
 
         // Initiliaze Retrofit with Jackson as a default converter, and Rest Interceptor
         asInstance = new Retrofit.Builder()
-                .baseUrl(AUDIOSEARCH_BASE_URL)
-                .client(asclient)
+                .baseUrl(AUDIOSEARCH_BASE_API_URL)
+                .client(asClient)
                 .addConverterFactory(JacksonConverterFactory.create())
                 .build();
 
         // Initialize Retrofit's AuthorizationService
-
         authorizationService = authInstance.create(AuthorizationService.class);
 
         // Initialize Retrofit RestService
         restService = asInstance.create(AudiosearchService.class);
         return this;
     }
+
 
     public String getApplicationId(){
         return this.ApplicationId;
@@ -129,9 +129,15 @@ public class Audiosearch {
         return restService.getEpisodesByTaskmaker(tastemakerId, n);
     }
 
+    public Call<EpisodeQueryResult> searchEpisodes(String query) throws Exception{
+        Authorize();
+        return restService.searchEpisodes(query,AUTH_TOKEN);
+    }
+
     // get episode details
-    public Call<Object> getEpisode(long episodeId){
-        return restService.getEpisode(episodeId);
+    public Call<EpisodeResult> getEpisode(long episodeId) throws IOException{
+        Authorize();
+        return restService.getEpisode(episodeId,AUTH_TOKEN);
     }
 
     // search for shows, episodes and people
@@ -186,8 +192,9 @@ public class Audiosearch {
 
     // get Trending
 
-    public Call<List<TrendResult>> getTrending(){
-        return restService.getTrending();
+    public Call<List<TrendResult>> getTrending() throws IOException{
+        Authorize();
+        return restService.getTrending(AUTH_TOKEN);
     }
 
 }

@@ -2,6 +2,7 @@
 package aj.canvas.audiosearch.model;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -23,7 +24,7 @@ public class TrendResult {
     @JsonProperty("twitter_url")
     private String twitterUrl;
     @JsonProperty("related_episodes")
-    private RelatedEpisodes relatedEpisodes;
+    private List<RelatedEpisodes> relatedEpisodes;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -73,18 +74,8 @@ public class TrendResult {
      *     The relatedEpisodes
      */
     @JsonProperty("related_episodes")
-    public RelatedEpisodes getRelatedEpisodes() {
+    public List<RelatedEpisodes> getRelatedEpisodes() {
         return relatedEpisodes;
-    }
-
-    /**
-     * 
-     * @param relatedEpisodes
-     *     The related_episodes
-     */
-    @JsonProperty("related_episodes")
-    public void setRelatedEpisodes(RelatedEpisodes relatedEpisodes) {
-        this.relatedEpisodes = relatedEpisodes;
     }
 
     @JsonAnyGetter

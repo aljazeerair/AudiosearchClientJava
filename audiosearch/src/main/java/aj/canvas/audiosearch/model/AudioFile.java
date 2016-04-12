@@ -13,7 +13,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "filename",
     "duration",
     "current_status",
-    "url"
+    "url",
+    "mp3",
+    "ogg",
+    "listenlen",
+    "url_title"
 })
 public class AudioFile {
 
@@ -22,11 +26,19 @@ public class AudioFile {
     @JsonProperty("filename")
     private String filename;
     @JsonProperty("duration")
-    private Integer duration;
+    private String duration;
     @JsonProperty("current_status")
     private String currentStatus;
     @JsonProperty("url")
     private List<String> url = new ArrayList<String>();
+    @JsonProperty("mp3")
+    private String mp3;
+    @JsonProperty("ogg")
+    private String ogg;
+    @JsonProperty("listenlen")
+    private String listenlen;
+    @JsonProperty("url_title")
+    private String urlTitle;
 
     /**
      * 
@@ -74,7 +86,7 @@ public class AudioFile {
      *     The duration
      */
     @JsonProperty("duration")
-    public Integer getDuration() {
+    public String getDuration() {
         return duration;
     }
 
@@ -84,7 +96,7 @@ public class AudioFile {
      *     The duration
      */
     @JsonProperty("duration")
-    public void setDuration(Integer duration) {
+    public void setDuration(String duration) {
         this.duration = duration;
     }
 

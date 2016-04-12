@@ -3,6 +3,8 @@ package aj.canvas.audiosearch.model;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -29,7 +31,13 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "extra",
     "urls",
     "categories",
-    "highlights"
+    "highlights",
+    "network",
+    "locations",
+    "image_urls",
+    "contributors",
+    "excerpts",
+    "topics"
 })
 public class EpisodeResult {
 
@@ -54,7 +62,7 @@ public class EpisodeResult {
     @JsonProperty("updated_at")
     private String updatedAt;
     @JsonProperty("itunes_episode")
-    private Object itunesEpisode;
+    private String itunesEpisode;
     @JsonProperty("date_added")
     private String dateAdded;
     @JsonProperty("show_id")
@@ -68,13 +76,26 @@ public class EpisodeResult {
     @JsonProperty("entities")
     private List<Entity> entities = new ArrayList<Entity>();
     @JsonProperty("extra")
-    private Extra extra;
+    private Object extra;
     @JsonProperty("urls")
     private Urls urls;
     @JsonProperty("categories")
     private List<Category> categories = new ArrayList<Category>();
     @JsonProperty("highlights")
-    private Highlights highlights;
+    private Object highlights;
+    @JsonProperty("network")
+    private String network;
+    @JsonProperty("locations")
+    private Object locations;
+    @JsonProperty("image_urls")
+    private Object imageUrls;
+    @JsonProperty("contributors")
+    private Object contributors;
+    @JsonProperty("excerpts")
+    private Object excerpts;
+    @JsonProperty("topics")
+    private Object topics;
+
 
     /**
      * 
@@ -292,7 +313,7 @@ public class EpisodeResult {
      *     The itunes_episode
      */
     @JsonProperty("itunes_episode")
-    public void setItunesEpisode(Object itunesEpisode) {
+    public void setItunesEpisode(String itunesEpisode) {
         this.itunesEpisode = itunesEpisode;
     }
 
@@ -458,21 +479,11 @@ public class EpisodeResult {
 
     /**
      * 
-     * @return
-     *     The highlights
-     */
-    @JsonProperty("highlights")
-    public Highlights getHighlights() {
-        return highlights;
-    }
-
-    /**
-     * 
      * @param highlights
      *     The highlights
      */
     @JsonProperty("highlights")
-    public void setHighlights(Highlights highlights) {
+    public void setHighlights(Object highlights) {
         this.highlights = highlights;
     }
 
